@@ -63,6 +63,44 @@ def delete_show(id):
     return create_response(message="Show deleted")
 
 
+@app.route("/shows/<id>", methods=['GET'])
+def get_show(id):
+    try:
+        if db.getById('shows', int(id)) is None:
+            return create_response(status=404, message="No show with this id exists")
+        db.getById('shows', int(id))
+        return create_response((db.get('shows')[int(id)-1]))
+    except:
+        return create_response(status=404, message="No show with this id exists")
+
+
+@app.route("/shows", methods=['POST'])
+def post_show():
+    if "episodes_seen" not in request.json and "name" not in request.json:
+        return create_response(status=422, message="name and episodes_seen parameter missing") 
+    elif "name" not in request.json:
+        return create_response(status=422, message="name parameter missing") 
+    elif "episodes_seen" not in request.json:
+        return create_response(status=422, message="episodes_seen parameter missing")    
+    else: 
+        dict = db.create("shows", request.json)
+        return create_response(dict, status = 201)
+
+@app.route("/shows/<id>", methods=['PUT'])
+def update_show(id):
+    try:
+        if db.getById('shows', int(id)) is None:
+            return create_response(status=404, message="No show with this id exists")
+        if "name" in request.json:
+            db.getById('shows', int(id))["name"] = request.json["name"]
+        if "episodes_seen" in request.json:
+            db.getById('shows', int(id))["episodes_seen"] = request.json["episodes_seen"]
+        db.updateById("shows", id, request.json)
+        dict = ((db.get('shows')[int(id)-1]))
+        return create_response(dict, status = 201)
+    except:
+        return create_response(status=404, message="No show with this id exists")
+       
 # TODO: Implement the rest of the API here!
 
 """
