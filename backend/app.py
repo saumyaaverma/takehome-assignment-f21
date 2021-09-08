@@ -24,6 +24,7 @@ def create_response(
     :param message <str> optional message
     :returns tuple of Flask Response and int, which is what flask expects for a response
     """
+
     if type(data) is not dict and data is not None:
         raise TypeError("Data should be a dictionary 😞")
 
@@ -53,7 +54,18 @@ def mirror(name):
 
 @app.route("/shows", methods=['GET'])
 def get_all_shows():
-    return create_response({"shows": db.get('shows')})
+    minimum_episodes = request.args.get("minEpisodes")
+    if(minimum_episodes == None):
+        return create_response({"shows": db.get('shows')})
+    else:
+        shows = db.get('shows')
+        min_list = []
+        for show in shows:
+            if(show["episodes_seen"] >= int(minimum_episodes)):
+                min_list.append(show)
+        if(len(min_list) == 0):
+            return create_response(status=404, message="No shows with episodes gretater or equal than this exist")
+        return create_response({"shows": min_list})
 
 @app.route("/shows/<id>", methods=['DELETE'])
 def delete_show(id):
@@ -100,8 +112,7 @@ def update_show(id):
         return create_response(dict, status = 201)
     except:
         return create_response(status=404, message="No show with this id exists")
-       
-# TODO: Implement the rest of the API here!
+#TODO: Implement the rest of the API here!
 
 """
 ~~~~~~~~~~~~ END API ~~~~~~~~~~~~

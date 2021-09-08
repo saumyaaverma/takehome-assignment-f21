@@ -11,7 +11,12 @@
       :name="show.name"
       :episodes_seen="show.episodes_seen"
     />
+    <input type="text" v-model="input">
+    <button type="button" @click="addShow(input)">Add a new Show</button>
   </div>
+
+
+
 </template>
 
 <script>
@@ -31,7 +36,16 @@ export default {
         { id: 3, name: "Black Mirror", episodes_seen: 3 }
       ]
     };
+  },
+  methods: {
+  addShow(input) {
+    if(!input){
+      return;
+    }
+    this.shows.push({ id:(this.shows.length + 1), name: input, episodes_seen: 0 });
+    this.name = '';
   }
+}
 };
 </script>
 

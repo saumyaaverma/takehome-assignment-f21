@@ -1,6 +1,5 @@
 <template>
 <div>
-  <p>I'm a Counter!</p>
   <button v-on:click="count += 1">increment</button>
   <button v-on:click="count -= 1">decrement</button>
   <br><br>

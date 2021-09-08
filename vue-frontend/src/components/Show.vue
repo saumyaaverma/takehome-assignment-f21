@@ -1,7 +1,8 @@
 <template>
   <!-- PART 4: Add your code here -->
   <div>
-    <p>{{ name }}</p>
+    <p>Name of the Show : {{ name }}</p>
+    <p>ID of the Show : {{ id }}</p>
     <Counter v-bind:number="episodes_seen"/>
 </div>
 </template>
