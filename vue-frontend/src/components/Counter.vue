@@ -10,7 +10,11 @@
 
 <script>
 export default {
-  props:{"number":Number},
+  props:{
+    number: {
+      default: 0,
+      type: Number}
+  },
   data() {
     return {
       count: this.number
@@ -21,4 +25,3 @@ export default {
 
 <style>
 </style>
-
